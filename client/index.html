@@ -1,0 +1,129 @@
+<html ng-app='myApp'>
+<head>
+	<title>Boilerplate_Mean Stack</title>
+
+	<!-- Angular CDN -->
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+
+    <!-- Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+    <!-- Jquery UI CDN -->
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+
+    <!-- Bootstrap CDN -->
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+	<!-- Angular Code -->
+	<script type="text/javascript">
+		var myApp = angular.module('myApp',['ngRoute']);
+
+		// ROUTES ===========================================
+		myApp.config(function ($routeProvider){
+				$routeProvider
+			        .when('/',{
+			            templateUrl: 'partials/main.html'
+			        })
+			        .otherwise({
+			          redirectTo: '/'
+			        });
+			});
+
+
+
+		// FACTORY ==========================================
+		myApp.factory('MeanFactory', function($http){
+			var factory = {};
+
+			factory.getAllMessages = function(callback){
+				$http.get('/get_Messages').success(function(
+					output){
+					allMessages = output;
+					callback(allMessages);
+				})
+			}
+
+			factory.createMessage = function(info, callback){
+				$http.post('/createMessages', info).success(function(output){
+
+				})
+			}
+
+			factory.addComment = function(id, data, callback){
+				// passing in the id, commenter, comments
+				console.log(id);
+				console.log('============');
+				$http.post('/add_comment/' + id, data).success(function(output){
+
+				})
+			}
+
+
+
+
+			return factory;
+
+		});
+
+
+
+		// CONTROLLER =======================================
+		myApp.controller('MeanController', function($scope, MeanFactory){
+
+
+			$scope.newComment = {};
+
+			// get all messages
+			MeanFactory.getAllMessages(function(data){
+				console.log(data);
+				$scope.allMessages = data;
+			})
+
+
+			$scope.newMess = function(){
+				MeanFactory.createMessage($scope.newMessage, function(){
+					// get the updated messages list
+					$scope.currentMessages = MeanFactory.getAllTopics;
+				})
+				// clear the form
+				$scope.newMessage = {};
+			}
+
+
+			$scope.newComments = function(id){
+				
+				MeanFactory.addComment(id, $scope.newComment, function(data){
+
+
+				});
+				$scope.newComment = {};
+			}
+
+
+
+
+		});
+
+
+
+	</script>
+
+
+
+
+</head>
+<body>
+	<div ng-view=""></div>
+</body>
+</html>

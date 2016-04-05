@@ -1,0 +1,47 @@
+<div ng-controller='MeanController'>
+
+	<!-- Create new message here -->
+	<form>
+		<h3>Enter Name<input type="text" ng-model="newMessage.name"></h3>
+		<h3>Enter Message</h3>
+		<textarea rows='4' cols='30' ng-model='newMessage.message'></textarea><br>
+		<input type='submit' ng-model='newMessage' ng-click='newMess()'>
+	</form>
+
+	<!-- Display messages here -->
+	<div ng-repeat='x in allMessages'>
+		<div ng-repeat='y in x'>
+			<h1>{{ y.name }}</h1>
+			<h3>{{ y.message }}</h3>
+
+			{{ y.comment[0].comment }}
+			{{ y.comment[0].commenter }}
+			
+
+
+
+
+
+
+
+		<!-- <h2>{{ x.name }}</h2>
+		<h6>{{ x.message }}}</h6>
+		<h6>{{ x._id }}</h6> -->
+
+		<form>
+			<h3>Commenter Name<input type="text" ng-model="newComment.commenter"></h3>
+			<h3>Enter Comment</h3>
+			<textarea rows='4' cols='30' ng-model='newComment.comment'></textarea><br>
+			<input type='submit' ng-click='newComments(x._id)'>
+		</form>
+
+		</div>
+	</div>
+
+
+	
+
+
+
+
+</div>
