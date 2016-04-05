@@ -11,30 +11,25 @@
 	<!-- Display messages here -->
 	<div ng-repeat='x in allMessages'>
 		<div ng-repeat='y in x'>
+			<!-- Display Message -->
 			<h1>{{ y.name }}</h1>
-			<h3>{{ y.message }}</h3>
+			<h1>{{ y.message }}</h1>
 
-			{{ y.comment[0].comment }}
-			{{ y.comment[0].commenter }}
-			
+			<!-- Display Comments -->
+			<h6>Comments for this Message</h6>
+			<div ng-repeat='j in y.comments'>
+				<h3>Commenter: {{ j.commenter }}</h3>
+				<h5>Comment: {{ j.comment }}</h5>
+			</div>
 
-
-
-
-
-
-
-		<!-- <h2>{{ x.name }}</h2>
-		<h6>{{ x.message }}}</h6>
-		<h6>{{ x._id }}</h6> -->
-
-		<form>
-			<h3>Commenter Name<input type="text" ng-model="newComment.commenter"></h3>
-			<h3>Enter Comment</h3>
-			<textarea rows='4' cols='30' ng-model='newComment.comment'></textarea><br>
-			<input type='submit' ng-click='newComments(x._id)'>
-		</form>
-
+			<!-- Create comments -->
+			<form>
+				<h3>Commenter Name</h3>
+				<input type="text" ng-model="batman.commenter">
+				<h3>Enter Comment</h3>
+				<textarea rows='4' cols='30' ng-model='batman.comment'></textarea><br>
+				<input type='submit' ng-model='batman' ng-click='new_Comments(y._id)'>
+			</form>
 		</div>
 	</div>
 

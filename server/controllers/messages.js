@@ -1,31 +1,22 @@
 // MESSSAGES CONTROLLER
 
 var mongoose = require('mongoose');
+
+// 'Message' and 'Comment' objects below will give
+// me actions on the MongoDB database
 var Message = mongoose.model('Message');
 var Comment = mongoose.model('Comment');
+
 
 
 module.exports = (function(){
 
 	return {
 
-		// methods goes here
-		// getMessages: function(req, res){
-
-		// 	Message.find({}, function(err, results){
-		// 		if(err){
-		// 			console.log('error getting data');
-		// 		}
-		// 		else{
-		// 			res.json(results)
-		// 		}
-		// 	})
-		// },
-
-
+		// display all message and comments to go along with it
 		getMessages: function(req, res){
 			Message.find({})
-			.populate('comment')
+			.populate('comments')
 			.exec(function(err, message){
 				res.json('message', {message});
 
@@ -33,8 +24,6 @@ module.exports = (function(){
 		},
 
 	
-
-
 		createMessages: function(req, res){
 			var message = new Message( {name:req.body.name, message:req.body.message} );
 
@@ -43,19 +32,23 @@ module.exports = (function(){
 					res.render('index', {errors: message.errors})
 				}
 				else{
-					console.log('Successfully created a quote');
+					console.log('Successfully created a message');
 				}
-			})
+			});
 		},
 
 
 		createComments: function(req, res, id){
-			Message.findOne({_id:req.params.id}, function(err, message){
+			// find the message according to the id
+			Message.findOne({ _id: req.params.id }, function(err, message){
+				// getting the data from front end
 				var comment = new Comment(req.body);
 
-				comment._message = message.id;
-				message.comment.push(comment);
-
+				// set the reference
+				comment._message = message._id;
+				// store the comments to message.comments
+				message.comments.push(comment);
+				// save the comments and message to database
 				comment.save(function(err){
 					message.save(function(err){
 						if(err){
@@ -64,28 +57,11 @@ module.exports = (function(){
 						else{
 							res.redirect('/');
 						}
-					})
-				})
-			})
+					});
+				});
+			});
 		},
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	}
-
-
-
 
 
 
